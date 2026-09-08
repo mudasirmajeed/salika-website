@@ -19,6 +19,7 @@ export default function Admin() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [section, setSection] = useState("quotes");
+  const [subscribers, setSubscribers] = useState([]);
 
   // -------------------------
   // QUOTES
@@ -70,7 +71,17 @@ export default function Admin() {
         }));
 
         setBooks(loadedBooks);
-      } catch (err) {
+
+const subscriberSnapshot = await getDocs(collection(db, "subscribers"));
+
+const loadedSubscribers = subscriberSnapshot.docs.map((item) => ({
+  id: item.id,
+  ...item.data(),
+}));
+
+setSubscribers(loadedSubscribers);
+
+} catch (err) {
         console.error("Could not load data:", err);
         setError("Could not load data.");
       }
