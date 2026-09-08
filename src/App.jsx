@@ -262,7 +262,7 @@ function AnnouncementsSection({announcements}) {
 // FRIENDLY ADMIN PORTAL — Easy for Salika to use
 // ═══════════════════════════════════════════════════════
 
-function AdminPortal({quotes, poems, announcements, subscribers, books, onAddQ, onDelQ, onAddP, onDelP, onAddA, onDelA,onAddBook, onDelBook, onClose}) {
+function AdminPortal({quotes, poems, announcements, subscribers, setSubscribers, books, onAddQ, onDelQ, onAddP, onDelP, onAddA, onDelA, onAddBook, onDelBook, onClose}) {
   const [screen, setScreen] = useState("home"); // home | quotes | poems | announcements | subscribers
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
@@ -284,7 +284,26 @@ function AdminPortal({quotes, poems, announcements, subscribers, books, onAddQ, 
   const [newAnn, setNewAnn] = useState({type:"general", title:"", message:"", date:"", link:"", linkLabel:"", urgent:false});
 
   const showMsg = m => { setMsg(m); setTimeout(()=>setMsg(""), 3000); };
+useEffect(() => {
+  if (auth.currentUser?.email !== "mudasirmajeedshah@gmail.com") return;
 
+  const loadSubscribers = async () => {
+    try {
+      const snap = await getDocs(collection(db, "subscribers"));
+
+      const loadedSubscribers = snap.docs.map(d => ({
+        id: d.id,
+        ...d.data()
+      }));
+
+      setSubscribers(loadedSubscribers);
+    } catch (e) {
+      console.error("Could not load subscribers:", e);
+    }
+  };
+
+  loadSubscribers();
+}, [setSubscribers]);
   const doAddQuote = async () => {
     if(!newQuote.trim()) return;
     setSaving(true); await onAddQ(newQuote.trim()); setNewQuote(""); setSaving(false);
