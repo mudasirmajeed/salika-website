@@ -1512,6 +1512,7 @@ setQuotes(firebaseQuotes);
     firebaseAnnouncements.map(a => a.title)
   );
 
+  if (auth.currentUser?.email === "mudasirmajeedshah@gmail.com") {
   for (const oldAnnouncement of announcements) {
     if (!existingAnnouncementTitles.has(oldAnnouncement.title)) {
       const { id, ...announcementData } = oldAnnouncement;
@@ -1531,6 +1532,7 @@ setQuotes(firebaseQuotes);
       }
     }
   }
+}
 
   setAnnouncements(firebaseAnnouncements);
 
