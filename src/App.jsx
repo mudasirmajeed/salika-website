@@ -1642,7 +1642,7 @@ setBooks(firebaseBooks);
     }
   ]);
 };
-  const delP=async id=>{ const ps=poems.filter(x=>x.id!==id); setPoems(ps); await save("sp",ps); };
+ const delP=async id=>{ await deleteDoc(doc(db,"poems",id)); setPoems(poems.filter(x=>x.id!==id)); };
 const addBook=async b=>{
   const ref=await addDoc(collection(db,"books"),b);
   setBooks([...books,{...b,id:ref.id}]);
