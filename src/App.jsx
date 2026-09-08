@@ -1475,6 +1475,7 @@ setQuotes(firebaseQuotes);
     firebasePoems.map(p => p.text)
   );
 
+  if (auth.currentUser?.email === "mudasirmajeedshah@gmail.com") {
   for (const oldPoem of poems) {
     if (!existingPoemTexts.has(oldPoem.text)) {
       const { id, ...poemData } = oldPoem;
@@ -1493,7 +1494,7 @@ setQuotes(firebaseQuotes);
         console.error("Could not migrate old poem:", e);
       }
     }
-  }
+  }}
 
   setPoems(firebasePoems);
 
@@ -1539,14 +1540,7 @@ setQuotes(firebaseQuotes);
 } catch (e) {
   console.error("Could not load announcements:", e);
 }
-      const subscriberSnap = await getDocs(collection(db, "subscribers"));
-
-setSubscribers(
-  subscriberSnap.docs.map(d => ({
-    id: d.id,
-    ...d.data()
-  }))
-);
+      
       try {
   const snap = await getDocs(collection(db, "books"));
 
@@ -1557,7 +1551,8 @@ const firebaseBooks = snap.docs.map(d => ({
 
 const existingTitles = new Set(firebaseBooks.map(b => b.title));
 
-for (const oldBook of books) {
+if (auth.currentUser?.email === "mudasirmajeedshah@gmail.com") {
+  for (const oldBook of books) {
   if (!existingTitles.has(oldBook.title)) {
     const { id, ...bookData } = oldBook;
 
@@ -1570,7 +1565,8 @@ for (const oldBook of books) {
       id: ref.id,
       ...bookData
     });
-  }
+    }
+}
 }
 
 setBooks(firebaseBooks);
